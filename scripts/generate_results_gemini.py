@@ -8,12 +8,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-METADATA_PATH="data/silver/metadata"
 IMAGES_BASE_PATH="data/bronze/imagery/realsense_overhead"
 TEST_IDS_PATH="data/bronze/dish_ids/splits/rgb_test_ids.txt"
 RESULTS_PATH="results/gemini"
 INDENT_SIZE=2
-REQUESTS_DELAY=4 #in seconds
 
 
 def main():
@@ -43,7 +41,6 @@ def main():
                 }
 
                 save_result(result_data)
-                check_elapsed_time(elapsed_time)
             except Exception as e:
                 print(e)
     
@@ -88,16 +85,6 @@ def save_result(data):
     with open(result_path, "w") as result_file:
         json.dump(data, result_file, indent=INDENT_SIZE)
 
-
-def check_elapsed_time(elapsed_time: float):
-    """
-    To avoid reaching the limit of requests per minute
-
-    Args:
-        elapsed_time (float): How long the last request lasted.
-    """
-    if elapsed_time < REQUESTS_DELAY:
-        time.sleep(REQUESTS_DELAY - elapsed_time + 1)
 
 if __name__ == "__main__":
     main()
